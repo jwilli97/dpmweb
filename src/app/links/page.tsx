@@ -28,7 +28,7 @@ export default function LinkTree() {
               Digital Paradise Media Instagram
             </LinkButton>
             <LinkButton href="mailto:digitalparadisemedia@gmail.com" icon={<Mail />}>
-              Email
+              Email (maybe not working yet)
             </LinkButton>
           </div>
         </CardContent>
