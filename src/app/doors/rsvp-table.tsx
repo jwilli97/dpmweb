@@ -46,7 +46,7 @@ export function RSVPTable() {
       
       const { error } = await supabase
         .from("superlove")
-        .update({ attended: true })
+        .update({ attended: !attended })
         .eq("id", id)
 
       if (error) {
