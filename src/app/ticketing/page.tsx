@@ -1,6 +1,7 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,8 +10,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 
-// Move Supabase client creation outside the component
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -24,14 +25,14 @@ export default function RSVPForm() {
     lastname: "",
     email: "",
     guests: 0,
-    paymentOption: ""
+    paymentOption: "",
+    paymentHandle: ""
   });
 
   // Add price constants
   const PRICES = {
     venmo: 20,
-    cashapp: 20,
-    cash: 25
+    cashapp: 20
   };
 
   // Calculate total attendees (including main person)
@@ -73,14 +74,67 @@ export default function RSVPForm() {
 
   return (
     <div className="min-h-screen bg-[url('/background1.jpeg')] bg-cover bg-center flex flex-col items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-white/60 backdrop-blur-sm">
+      <Card className="w-full max-w-2xl bg-white/60 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="text-2xl text-center">SUPERLOVE - FEB 14, 2025</CardTitle>
+          <CardTitle className="text-3xl font-semibold text-center">
+            S U P E R L O V E
+            <div className="text-xl mt-1 font-normal">February 14, 2025 • North ATX</div>
+          </CardTitle>
+          <CardDescription className="text-center text-gray-800 whitespace-pre-line mt-4">
+            {`Schedule:
+            7:00 PM - Doors Open
+            8:00 PM - Glossolalia Online
+            9:00 PM - Cherelle K & b. spoke
+            10:00 PM - Chucky Blk
+
+            Your ticket includes:
+            • Food and drink voucher
+            • Full evening of performances
+            • Venue location & details (sent after purchase)`}
+          </CardDescription>
         </CardHeader>
         <CardContent>
+          <div className="flex justify-center w-full mb-6 px-12">
+            <Carousel className="w-full max-w-xl">
+              <CarouselContent>
+                <CarouselItem>
+                  <div className="p-1">
+                    <Card>
+                      <CardContent className="flex aspect-[16/9] items-center justify-center p-0 relative">
+                        <Image 
+                          src="/SuperlovePoster.jpg" 
+                          alt="Superlove Poster"
+                          className="object-cover rounded-lg"
+                          fill
+                          priority
+                        />
+                      </CardContent>
+                    </Card>
+                  </div>
+                </CarouselItem>
+                <CarouselItem>
+                  <div className="p-1">
+                    <Card>
+                      <CardContent className="flex aspect-[16/9] items-center justify-center p-0 relative">
+                        <Image 
+                          src="/PinkPoster.jpeg" 
+                          alt="Pink Poster"
+                          className="object-cover rounded-lg"
+                          fill
+                          priority
+                        />
+                      </CardContent>
+                    </Card>
+                  </div>
+                </CarouselItem>
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </div>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="firstname">First Name</Label>
+              <Label htmlFor="firstname" className="text-lg font-semibold">First Name</Label>
               <Input
                 id="firstname"
                 required
@@ -90,7 +144,7 @@ export default function RSVPForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="lastname">Last Name</Label>
+              <Label htmlFor="lastname" className="text-lg font-semibold">Last Name</Label>
               <Input
                 id="lastname"
                 required
@@ -100,7 +154,7 @@ export default function RSVPForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-lg font-semibold">Email (where we'll send your ticket)</Label>
               <Input
                 id="email"
                 type="email"
@@ -111,7 +165,7 @@ export default function RSVPForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="guests">Additional Guests</Label>
+              <Label htmlFor="guests" className="text-lg font-semibold">Additional Guests</Label>
               <Select
                 value={formData.guests.toString()}
                 onValueChange={(value) => setFormData({...formData, guests: parseInt(value)})}
@@ -131,7 +185,7 @@ export default function RSVPForm() {
             </div>
 
             <div className="space-y-2">
-              <Label>Payment Option</Label>
+              <Label className="text-lg font-semibold">Payment Option</Label>
               <RadioGroup
                 required
                 value={formData.paymentOption}
@@ -139,17 +193,23 @@ export default function RSVPForm() {
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="venmo" id="venmo" />
-                  <Label htmlFor="venmo">Venmo (${PRICES.venmo * totalAttendees})</Label>
+                  <Label htmlFor="venmo" className="">Venmo (${PRICES.venmo * totalAttendees})</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="cashapp" id="cashapp" />
-                  <Label htmlFor="cashapp">Cash App (${PRICES.cashapp * totalAttendees})</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="cash" id="cash" />
-                  <Label htmlFor="cash">Cash at Door (${PRICES.cash * totalAttendees})</Label>
+                  <Label htmlFor="cashapp" className="">Cash App (${PRICES.cashapp * totalAttendees})</Label>
                 </div>
               </RadioGroup>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-lg font-semibold">Payment Handle</Label>
+              <Input
+                id="paymentHandle"
+                required
+                value={formData.paymentHandle}
+                onChange={(e) => setFormData({...formData, paymentHandle: e.target.value})}
+              />
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
