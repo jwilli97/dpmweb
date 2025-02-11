@@ -105,47 +105,52 @@ export function RSVPTable() {
   }, [supabase])
 
   return (
-    <>
-      <Table>
+    <div className="overflow-x-auto">
+      <Table className="w-full">
         <TableHeader>
           <TableRow>
-            <TableHead>First Name</TableHead>
-            <TableHead>Last Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Guests</TableHead>
-            <TableHead>Add Guests</TableHead>
-            <TableHead>Payment Option</TableHead>
-            <TableHead>Payment Handle</TableHead>
-            <TableHead>Attended</TableHead>
-            <TableHead>Action</TableHead>
+            <TableHead className="w-[120px]">First Name</TableHead>
+            <TableHead className="w-[120px]">Last Name</TableHead>
+            <TableHead className="w-[180px]">Email</TableHead>
+            <TableHead className="w-[80px] text-center">Guests</TableHead>
+            <TableHead className="w-[100px]">Add Guests</TableHead>
+            <TableHead className="w-[120px]">Payment</TableHead>
+            <TableHead className="w-[120px]">Handle</TableHead>
+            <TableHead className="w-[80px] text-center">Status</TableHead>
+            <TableHead className="w-[120px]">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {rsvps.map((rsvp) => (
             <TableRow key={rsvp.id}>
-              <TableCell>{rsvp.firstname}</TableCell>
+              <TableCell className="font-medium">{rsvp.firstname}</TableCell>
               <TableCell>{rsvp.lastname}</TableCell>
-              <TableCell>{rsvp.email}</TableCell>
-              <TableCell>{rsvp.guests}</TableCell>
+              <TableCell className="text-sm">{rsvp.email}</TableCell>
+              <TableCell className="text-center">{rsvp.guests}</TableCell>
               <TableCell>
                 <Button
                   variant="outline"
                   onClick={() => handleAddGuest(rsvp.id)}
+                  className="px-2 py-1 h-8 text-sm"
                 >
                   Add Guest
                 </Button>
               </TableCell>
               <TableCell>{rsvp.paymentOption}</TableCell>
-              <TableCell>{rsvp.paymentHandle}</TableCell>
-              <TableCell>
-                {rsvp.attended ? <CheckCircle className="text-green-500" /> : <XCircle className="text-red-500" />}
+              <TableCell className="text-sm">{rsvp.paymentHandle}</TableCell>
+              <TableCell className="text-center">
+                {rsvp.attended ? 
+                  <CheckCircle className="text-green-500 inline-block h-5 w-5" /> : 
+                  <XCircle className="text-red-500 inline-block h-5 w-5" />
+                }
               </TableCell>
               <TableCell>
                 <Button
                   variant={rsvp.attended ? "outline" : "default"}
                   onClick={() => handleCheckIn(rsvp.id, rsvp.attended)}
+                  className="px-2 py-1 h-8 text-sm w-full"
                 >
-                  {rsvp.attended ? "Undo Check-in" : "Check-in"}
+                  {rsvp.attended ? "Undo" : "Check-in"}
                 </Button>
               </TableCell>
             </TableRow>
@@ -179,6 +184,6 @@ export function RSVPTable() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 }
