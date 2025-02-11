@@ -212,6 +212,10 @@ export default function RSVPForm() {
               />
             </div>
 
+            <div className="space-y-2">
+              <p className="text-md text-center text-gray-800">Once we receive your payment via CashApp or Venmo, you will receive a confirmation email with your ticket details. <br /> Payments can be made to <strong>digitalparadisemedia</strong> on CashApp and Venmo.</p>
+            </div>
+
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? 'Submitting...' : 'Continue'}
             </Button>
