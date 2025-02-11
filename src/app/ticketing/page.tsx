@@ -165,21 +165,22 @@ export default function RSVPForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="guests" className="text-lg font-semibold">Additional Guests</Label>
+              <Label htmlFor="guests" className="text-lg font-semibold">Plus Ones</Label>
+              <p className="text-sm text-gray-800 mb-2">Your ticket is included by default. Select how many additional tickets you'd like to purchase.</p>
               <Select
                 value={formData.guests.toString()}
                 onValueChange={(value) => setFormData({...formData, guests: parseInt(value)})}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select number of guests" />
+                  <SelectValue placeholder="Select number of additional tickets" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="0">0</SelectItem>
-                  <SelectItem value="1">1</SelectItem>
-                  <SelectItem value="2">2</SelectItem>
-                  <SelectItem value="3">3</SelectItem>
-                  <SelectItem value="4">4</SelectItem>
-                  <SelectItem value="5">5</SelectItem>
+                  <SelectItem value="0">No additional tickets</SelectItem>
+                  <SelectItem value="1">1 additional ticket</SelectItem>
+                  <SelectItem value="2">2 additional tickets</SelectItem>
+                  <SelectItem value="3">3 additional tickets</SelectItem>
+                  <SelectItem value="4">4 additional tickets</SelectItem>
+                  <SelectItem value="5">5 additional tickets</SelectItem>
                 </SelectContent>
               </Select>
             </div>

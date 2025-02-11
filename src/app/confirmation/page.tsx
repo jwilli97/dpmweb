@@ -19,7 +19,7 @@ export default function ConfirmationPage() {
             We look forward to seeing you on February 14, 2025!
           </p>
           <p className="text-center">
-            Please check your email for payment instructions based on your selected payment method.
+            Once we receive your payment, you will receive a confirmation email with your ticket(s).
           </p>
           <Button 
             className="w-full" 
