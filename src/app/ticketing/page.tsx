@@ -186,6 +186,7 @@ export default function RSVPForm() {
 
             <div className="space-y-2">
               <Label className="text-lg font-semibold">Payment Option</Label>
+              <p className="text-sm text-gray-800">Payments can be made to <strong>digitalparadisemedia</strong> on CashApp and Venmo.</p>
               <RadioGroup
                 required
                 value={formData.paymentOption}
@@ -193,11 +194,11 @@ export default function RSVPForm() {
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="venmo" id="venmo" />
-                  <Label htmlFor="venmo" className="">Venmo (${PRICES.venmo * totalAttendees})</Label>
+                  <Label htmlFor="venmo" className="">Venmo (${PRICES.venmo * totalAttendees}) - @digitalparadisemedia</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="cashapp" id="cashapp" />
-                  <Label htmlFor="cashapp" className="">Cash App (${PRICES.cashapp * totalAttendees})</Label>
+                  <Label htmlFor="cashapp" className="">Cash App (${PRICES.cashapp * totalAttendees}) - $digitalparadisemedia</Label>
                 </div>
               </RadioGroup>
             </div>
@@ -213,7 +214,7 @@ export default function RSVPForm() {
             </div>
 
             <div className="space-y-2">
-              <p className="text-md text-center text-gray-800">Once we receive your payment via CashApp or Venmo, you will receive a confirmation email with your ticket details. <br /> Payments can be made to <strong>digitalparadisemedia</strong> on CashApp and Venmo.</p>
+              <p className="text-md text-center text-gray-800">Once we receive your payment via CashApp or Venmo, you will receive a confirmation email with your ticket details. <br /> </p>
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
