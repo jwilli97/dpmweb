@@ -45,7 +45,7 @@ export default function RSVPForm() {
     try {
       // Check for existing email
       const { data: existingRSVP } = await supabase
-        .from('superlove')
+        .from('april2025')
         .select('email')
         .eq('email', formData.email)
         .single();
@@ -57,7 +57,7 @@ export default function RSVPForm() {
       }
 
       const { error } = await supabase
-        .from('superlove')
+        .from('april2025')
         .insert([formData]);
         
       if (error) throw error;
@@ -77,15 +77,15 @@ export default function RSVPForm() {
       <Card className="w-full max-w-2xl bg-white/60 backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-3xl font-semibold text-center">
-            S U P E R L O V E
-            <div className="text-xl mt-1 font-normal">February 14, 2025 • North ATX</div>
+            Electric Lounge
+            <div className="text-xl mt-1 font-normal">April 20, 2025 • North ATX</div>
           </CardTitle>
           <CardDescription className="text-center text-gray-800 whitespace-pre-line mt-4">
             {`Schedule:
             7:00 PM - Doors Open
-            8:00 PM - Glossolalia Online
-            9:00 PM - Cherelle K & b. spoke
-            10:00 PM - Chucky Blk
+            8:00 PM - Very Busy People
+            9:00 PM - Eddie Angel
+            10:00 PM - Why Yes
 
             Your ticket includes:
             • Food and drink voucher
@@ -95,7 +95,7 @@ export default function RSVPForm() {
         </CardHeader>
         <CardContent>
           <div className="flex justify-center w-full mb-6 px-12">
-            <Carousel className="w-full max-w-xl">
+            {/* <Carousel className="w-full max-w-xl">
               <CarouselContent>
                 <CarouselItem>
                   <div className="p-1">
@@ -130,7 +130,8 @@ export default function RSVPForm() {
               </CarouselContent>
               <CarouselPrevious />
               <CarouselNext />
-            </Carousel>
+            </Carousel> */}
+            <Image src="/April2025.jpeg" alt="April Poster" width={1000} height={1000} />
           </div>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
@@ -165,7 +166,7 @@ export default function RSVPForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="guests" className="text-lg font-semibold">Plus Ones</Label>
+              <Label htmlFor="guests" className="text-lg font-semibold">Additional Tickets</Label>
               <p className="text-sm text-gray-800 mb-2">Your ticket is included by default. Select how many additional tickets you'd like to purchase.</p>
               <Select
                 value={formData.guests.toString()}
