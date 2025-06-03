@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, XCircle, Mail, MailCheck } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -23,6 +23,7 @@ interface RSVP {
   paymentOption: string
   paymentHandle: string
   attended: boolean
+  tickets_sent: boolean
 }
 
 export function RSVPTable() {
@@ -31,6 +32,7 @@ export function RSVPTable() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedRSVPId, setSelectedRSVPId] = useState<number | null>(null)
   const [guestNames, setGuestNames] = useState<string[]>([''])
+  const [sendingEmail, setSendingEmail] = useState<number | null>(null)
 
   const fetchRSVPs = async () => {
     const { data, error } = await supabase.from("june2025").select("*").order("id", { ascending: true })
@@ -39,6 +41,7 @@ export function RSVPTable() {
       console.error("Error fetching RSVPs:", error)
       return
     }
+    
     setRsvps(data || [])
   }
 
@@ -60,6 +63,53 @@ export function RSVPTable() {
       await fetchRSVPs()
     } catch (error) {
       console.error("Error updating attendance:", error)
+    }
+  }
+
+  const handleSendTicket = async (rsvp: RSVP) => {
+    setSendingEmail(rsvp.id)
+    
+    try {
+      // First, mark tickets as sent in the database
+      const { error: dbError } = await supabase
+        .from("june2025")
+        .update({ tickets_sent: true })
+        .eq("id", rsvp.id)
+
+      if (dbError) {
+        console.error("Error updating tickets_sent status:", dbError)
+        return
+      }
+
+      // Refresh the table to show updated status immediately
+      await fetchRSVPs()
+
+      // Then send the email
+      const response = await fetch('/api/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: rsvp.firstname,
+          lastName: rsvp.lastname,
+          email: rsvp.email,
+          guests: rsvp.guests,
+          paymentOption: rsvp.paymentOption,
+          paymentHandle: rsvp.paymentHandle,
+        }),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        console.error('Failed to send email:', result)
+        // Email failed, but we keep the tickets_sent as true since user attempted to send
+      }
+    } catch (error) {
+      console.error('Error sending ticket:', error)
+    } finally {
+      setSendingEmail(null)
     }
   }
 
@@ -111,15 +161,17 @@ export function RSVPTable() {
       <Table className="w-full">
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[120px]">First Name</TableHead>
-            <TableHead className="w-[120px]">Last Name</TableHead>
-            <TableHead className="w-[180px]">Email</TableHead>
-            <TableHead className="w-[80px] text-center">Guests</TableHead>
-            <TableHead className="w-[100px]">Add Guests</TableHead>
-            <TableHead className="w-[120px]">Payment</TableHead>
-            <TableHead className="w-[120px]">Handle</TableHead>
-            <TableHead className="w-[80px] text-center">Status</TableHead>
-            <TableHead className="w-[120px]">Action</TableHead>
+            <TableHead className="w-[90px]">First Name</TableHead>
+            <TableHead className="w-[90px]">Last Name</TableHead>
+            <TableHead className="w-[140px]">Email</TableHead>
+            <TableHead className="w-[50px] text-center">Guests</TableHead>
+            <TableHead className="w-[70px]">Add Guests</TableHead>
+            <TableHead className="w-[70px]">Payment</TableHead>
+            <TableHead className="w-[90px]">Handle</TableHead>
+            <TableHead className="w-[50px] text-center">Attended</TableHead>
+            <TableHead className="w-[70px]">Check-in</TableHead>
+            <TableHead className="w-[60px] text-center">Tickets Sent</TableHead>
+            <TableHead className="w-[90px]">Send Ticket</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -133,13 +185,13 @@ export function RSVPTable() {
                 <Button
                   variant="outline"
                   onClick={() => handleAddGuest(rsvp.id)}
-                  className="px-2 py-1 h-8 text-sm"
+                  className="px-2 py-1 h-8 text-xs"
                 >
                   Add Guest
                 </Button>
               </TableCell>
-              <TableCell>{rsvp.paymentOption}</TableCell>
-              <TableCell className="text-sm">{rsvp.paymentHandle}</TableCell>
+              <TableCell className="text-sm">{rsvp.paymentOption}</TableCell>
+              <TableCell className="text-xs">{rsvp.paymentHandle}</TableCell>
               <TableCell className="text-center">
                 {rsvp.attended ? 
                   <CheckCircle className="text-green-500 inline-block h-5 w-5" /> : 
@@ -150,9 +202,26 @@ export function RSVPTable() {
                 <Button
                   variant={rsvp.attended ? "outline" : "default"}
                   onClick={() => handleCheckIn(rsvp.id, rsvp.attended)}
-                  className="px-2 py-1 h-8 text-sm w-full"
+                  className="px-2 py-1 h-8 text-xs w-full"
                 >
                   {rsvp.attended ? "Undo" : "Check-in"}
+                </Button>
+              </TableCell>
+              <TableCell className="text-center">
+                {rsvp.tickets_sent ? 
+                  <MailCheck className="text-green-500 inline-block h-5 w-5" /> : 
+                  <Mail className="text-gray-400 inline-block h-5 w-5" />
+                }
+              </TableCell>
+              <TableCell>
+                <Button
+                  variant={rsvp.tickets_sent ? "outline" : "secondary"}
+                  onClick={() => handleSendTicket(rsvp)}
+                  disabled={sendingEmail === rsvp.id}
+                  className="px-2 py-1 h-8 text-xs w-full flex items-center gap-1"
+                >
+                  <Mail className="h-3 w-3" />
+                  {sendingEmail === rsvp.id ? "Sending..." : rsvp.tickets_sent ? "Resend" : "Send Ticket"}
                 </Button>
               </TableCell>
             </TableRow>
