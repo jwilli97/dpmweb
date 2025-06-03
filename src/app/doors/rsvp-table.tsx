@@ -33,7 +33,7 @@ export function RSVPTable() {
   const [guestNames, setGuestNames] = useState<string[]>([''])
 
   const fetchRSVPs = async () => {
-    const { data, error } = await supabase.from("april2025").select("*").order("id", { ascending: true })
+    const { data, error } = await supabase.from("june2025").select("*").order("id", { ascending: true })
 
     if (error) {
       console.error("Error fetching RSVPs:", error)
@@ -47,7 +47,7 @@ export function RSVPTable() {
       console.log('Attempting check-in for ID:', id, 'Current attended status:', attended)
       
       const { error } = await supabase
-        .from("april2025")
+        .from("june2025")
         .update({ attended: !attended })
         .eq("id", id)
 
@@ -87,7 +87,7 @@ export function RSVPTable() {
     try {
       const filteredNames = guestNames.filter(name => name.trim() !== '')
       const { error } = await supabase
-        .from("april2025")
+        .from("june2025")
         .update({ 
           additional_guests: filteredNames 
         })

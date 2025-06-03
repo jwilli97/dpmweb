@@ -45,7 +45,7 @@ export default function RSVPForm() {
     try {
       // Check for existing email
       const { data: existingRSVP } = await supabase
-        .from('april2025')
+        .from('june2025')
         .select('email')
         .eq('email', formData.email)
         .single();
@@ -57,7 +57,7 @@ export default function RSVPForm() {
       }
 
       const { error } = await supabase
-        .from('april2025')
+        .from('june2025')
         .insert([formData]);
         
       if (error) throw error;
@@ -78,14 +78,14 @@ export default function RSVPForm() {
         <CardHeader>
           <CardTitle className="text-3xl font-semibold text-center">
             Electric Lounge
-            <div className="text-xl mt-1 font-normal">April 20, 2025 • North ATX</div>
+            <div className="text-xl mt-1 font-normal">June 13, 2025 • North ATX</div>
           </CardTitle>
           <CardDescription className="text-center text-gray-800 whitespace-pre-line mt-4">
             {`Schedule:
             7:00 PM - Doors Open
-            8:00 PM - Very Busy People
-            9:00 PM - Eddie Angel
-            10:00 PM - Why Yes
+            8:00 PM - Mockjaw
+            9:00 PM - Big Wy's Brass Band
+            10:00 PM - Blue Tongue
 
             Your ticket includes:
             • Food and drink voucher
@@ -131,7 +131,7 @@ export default function RSVPForm() {
               <CarouselPrevious />
               <CarouselNext />
             </Carousel> */}
-            <Image src="/April2025.jpeg" alt="April Poster" width={1000} height={1000} />
+            <Image src="/june2025.jpeg" alt="June Poster" width={1000} height={1000} />
           </div>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
