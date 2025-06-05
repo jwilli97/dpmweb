@@ -11,16 +11,30 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
+import { z } from "zod";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+// Zod schema for form validation
+const formSchema = z.object({
+  firstname: z.string().min(1, "First name is required"),
+  lastname: z.string().min(1, "Last name is required"),
+  email: z.string().email("Please enter a valid email address"),
+  guests: z.number().min(0, "Number of guests cannot be negative"),
+  paymentOption: z.string().min(1, "Please select a payment option"),
+  paymentHandle: z.string().min(1, "Payment handle is required")
+});
+
+type FormData = z.infer<typeof formSchema>;
+type FormErrors = Partial<Record<keyof FormData, string>>;
+
 export default function RSVPForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     firstname: "",
     lastname: "",
     email: "",
@@ -28,6 +42,7 @@ export default function RSVPForm() {
     paymentOption: "",
     paymentHandle: ""
   });
+  const [errors, setErrors] = useState<FormErrors>({});
 
   // Add price constants
   const PRICES = {
@@ -41,32 +56,47 @@ export default function RSVPForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrors({});
     
     try {
+      // Validate form data with Zod
+      const validatedData = formSchema.parse(formData);
+
       // Check for existing email
       const { data: existingRSVP } = await supabase
         .from('june2025')
         .select('email')
-        .eq('email', formData.email)
+        .eq('email', validatedData.email)
         .single();
 
       if (existingRSVP) {
-        alert('An RSVP with this email already exists');
+        setErrors({ email: 'An RSVP with this email already exists' });
         setIsLoading(false);
         return;
       }
 
       const { error } = await supabase
         .from('june2025')
-        .insert([formData]);
+        .insert([validatedData]);
         
       if (error) throw error;
       
       // Redirect to confirmation page on success
       router.push('/confirmation');
     } catch (error: any) {
-      console.error('Error submitting RSVP:', error);
-      alert('Failed to submit RSVP. Please try again.');
+      if (error instanceof z.ZodError) {
+        // Handle Zod validation errors
+        const fieldErrors: FormErrors = {};
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            fieldErrors[err.path[0] as keyof FormData] = err.message;
+          }
+        });
+        setErrors(fieldErrors);
+      } else {
+        console.error('Error submitting RSVP:', error);
+        setErrors({ email: 'Failed to submit RSVP. Please try again.' });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -141,7 +171,9 @@ export default function RSVPForm() {
                 required
                 value={formData.firstname}
                 onChange={(e) => setFormData({...formData, firstname: e.target.value})}
+                className={errors.firstname ? "border-red-500" : ""}
               />
+              {errors.firstname && <p className="text-red-500 text-sm">{errors.firstname}</p>}
             </div>
 
             <div className="space-y-2">
@@ -151,7 +183,9 @@ export default function RSVPForm() {
                 required
                 value={formData.lastname}
                 onChange={(e) => setFormData({...formData, lastname: e.target.value})}
+                className={errors.lastname ? "border-red-500" : ""}
               />
+              {errors.lastname && <p className="text-red-500 text-sm">{errors.lastname}</p>}
             </div>
 
             <div className="space-y-2">
@@ -162,7 +196,9 @@ export default function RSVPForm() {
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
+                className={errors.email ? "border-red-500" : ""}
               />
+              {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
             </div>
 
             <div className="space-y-2">
@@ -172,7 +208,7 @@ export default function RSVPForm() {
                 value={formData.guests.toString()}
                 onValueChange={(value) => setFormData({...formData, guests: parseInt(value)})}
               >
-                <SelectTrigger>
+                <SelectTrigger className={errors.guests ? "border-red-500" : ""}>
                   <SelectValue placeholder="Select number of additional tickets" />
                 </SelectTrigger>
                 <SelectContent>
@@ -184,6 +220,7 @@ export default function RSVPForm() {
                   <SelectItem value="5">5 additional tickets</SelectItem>
                 </SelectContent>
               </Select>
+              {errors.guests && <p className="text-red-500 text-sm">{errors.guests}</p>}
             </div>
 
             <div className="space-y-2">
@@ -193,6 +230,7 @@ export default function RSVPForm() {
                 required
                 value={formData.paymentOption}
                 onValueChange={(value) => setFormData({...formData, paymentOption: value})}
+                className={errors.paymentOption ? "border border-red-500 rounded p-2" : ""}
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="venmo" id="venmo" />
@@ -203,6 +241,7 @@ export default function RSVPForm() {
                   <Label htmlFor="cashapp" className="">Cash App (${PRICES.cashapp * totalAttendees}) - $digitalparadisemedia</Label>
                 </div>
               </RadioGroup>
+              {errors.paymentOption && <p className="text-red-500 text-sm">{errors.paymentOption}</p>}
             </div>
 
             <div className="space-y-2">
@@ -212,7 +251,9 @@ export default function RSVPForm() {
                 required
                 value={formData.paymentHandle}
                 onChange={(e) => setFormData({...formData, paymentHandle: e.target.value})}
+                className={errors.paymentHandle ? "border-red-500" : ""}
               />
+              {errors.paymentHandle && <p className="text-red-500 text-sm">{errors.paymentHandle}</p>}
             </div>
 
             <div className="space-y-2">

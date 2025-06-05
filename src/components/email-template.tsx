@@ -39,7 +39,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
           marginBottom: '10px',
           fontSize: '28px'
         }}>
-          Electric Lounge
+          Electric Lounge ⚡️🛋️ 
         </h1>
         
         <h2 style={{ 
@@ -51,6 +51,25 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
         }}>
           June 13, 2025 • North ATX
         </h2>
+
+        <div style={{ 
+          textAlign: 'center', 
+          margin: '25px 0',
+          borderRadius: '8px',
+          overflow: 'hidden'
+        }}>
+          <img 
+            src="https://gxdygxanaalafstmoieh.supabase.co/storage/v1/object/public/email-images/invite.jpeg"
+            alt="Electric Lounge Event Invite" 
+            style={{ 
+              width: '100%', 
+              maxWidth: '500px',
+              height: 'auto',
+              display: 'block',
+              margin: '0 auto'
+            }} 
+          />
+        </div>
         
         <div style={{
           backgroundColor: '#f0f9ff',
@@ -87,7 +106,6 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
           <ul style={{ lineHeight: '1.6', color: '#555', paddingLeft: '20px' }}>
             <li>Food and drink voucher</li>
             <li>Full evening of performances</li>
-            <li>Access to all event areas</li>
           </ul>
         </div>
 
@@ -107,19 +125,23 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
           </div>
         </div>
 
-        <div style={{
-          backgroundColor: '#fef3c7',
-          border: '1px solid #f59e0b',
+        <div style={{ 
+          textAlign: 'center', 
+          margin: '25px 0',
           borderRadius: '8px',
-          padding: '15px',
-          marginBottom: '25px'
+          overflow: 'hidden'
         }}>
-          <h4 style={{ color: '#92400e', margin: '0 0 10px 0', fontSize: '16px' }}>
-            📍 Venue Information
-          </h4>
-          <p style={{ margin: '0', color: '#92400e' }}>
-            Detailed venue location and parking instructions will be sent 24 hours before the event.
-          </p>
+          <img 
+            src="https://gxdygxanaalafstmoieh.supabase.co/storage/v1/object/public/email-images/parking.jpeg"
+            alt="Parking Information" 
+            style={{ 
+              width: '100%', 
+              maxWidth: '500px',
+              height: 'auto',
+              display: 'block',
+              margin: '0 auto'
+            }} 
+          />
         </div>
 
         <div style={{ textAlign: 'center', marginTop: '30px' }}>
