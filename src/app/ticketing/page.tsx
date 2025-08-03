@@ -142,7 +142,7 @@ export default function RSVPForm() {
             {`Schedule:
             7:00 PM - Doors Open
             8:00 PM - K'in
-            9:00 PM - Don't Get Lemon
+            9:00 PM - don't get lemon
             10:00 PM - WhoKilledXiX
 
             Your ticket includes:
