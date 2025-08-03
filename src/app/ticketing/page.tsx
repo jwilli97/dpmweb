@@ -189,7 +189,7 @@ export default function RSVPForm() {
               <CarouselPrevious />
               <CarouselNext />
             </Carousel> */}
-              <Image src="/august2025.png" alt="August Poster" width={1000} height={1000} />
+              <Image src="/august2025.jpeg" alt="August Poster" width={1000} height={1000} />
           </div>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
