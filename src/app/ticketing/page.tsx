@@ -80,34 +80,6 @@ export default function RSVPForm() {
         .insert([validatedData]);
         
       if (error) throw error;
-
-      // Send confirmation email
-      try {
-        const emailResponse = await fetch('/api/send', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            firstName: validatedData.firstname,
-            lastName: validatedData.lastname,
-            email: validatedData.email,
-            guests: validatedData.guests,
-            paymentOption: validatedData.paymentOption,
-            paymentHandle: validatedData.paymentHandle,
-          }),
-        });
-
-        if (!emailResponse.ok) {
-          console.error('Failed to send confirmation email:', await emailResponse.text());
-          // Don't throw error here - we don't want to fail the whole process if email fails
-        } else {
-          console.log('Confirmation email sent successfully');
-        }
-      } catch (emailError) {
-        console.error('Error sending confirmation email:', emailError);
-        // Don't throw error here - we don't want to fail the whole process if email fails
-      }
       
       // Redirect to confirmation page on success
       router.push('/confirmation');

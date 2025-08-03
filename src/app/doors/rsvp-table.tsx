@@ -97,6 +97,7 @@ export function RSVPTable() {
           guests: rsvp.guests,
           paymentOption: rsvp.paymentOption,
           paymentHandle: rsvp.paymentHandle,
+          source: 'doors',
         }),
       })
 

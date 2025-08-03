@@ -7,11 +7,16 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { firstName, lastName, email, guests, paymentOption, paymentHandle } = body;
+    const { firstName, lastName, email, guests, paymentOption, paymentHandle, source } = body;
 
     // Validate required fields
     if (!firstName || !lastName || !email || paymentOption === undefined || !paymentHandle) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Only allow email sending from the doors page
+    if (source !== 'doors') {
+      return Response.json({ error: 'Email sending is only allowed from the doors page' }, { status: 403 });
     }
 
     const { data, error } = await resend.emails.send({
