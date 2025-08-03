@@ -49,7 +49,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
           fontSize: '18px',
           fontWeight: 'normal'
         }}>
-          June 13, 2025 • North ATX
+          August 16, 2025 • North ATX
         </h2>
 
         <div style={{ 
@@ -93,9 +93,9 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
           </h3>
           <div style={{ lineHeight: '1.6', color: '#555' }}>
             <p><strong>7:00 PM</strong> - Doors Open</p>
-            <p><strong>8:00 PM</strong> - Mockjaw</p>
-            <p><strong>9:00 PM</strong> - Big Wy's Brass Band</p>
-            <p><strong>10:00 PM</strong> - Blue Tongue</p>
+            <p><strong>8:00 PM</strong> - K'in</p>
+            <p><strong>9:00 PM</strong> - Don't Get Lemon</p>
+            <p><strong>10:00 PM</strong> - WhoKilledXiX</p>
           </div>
         </div>
 

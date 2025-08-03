@@ -16,7 +16,7 @@ export default function ConfirmationPage() {
         <CardContent className="space-y-6">
           <p className="text-center">
             Your RSVP has been successfully submitted for the next Electric Lounge show!
-            We look forward to seeing you on June 13, 2025!
+            We look forward to seeing you on August 16, 2025!
           </p>
           <p className="text-center">
             Once we receive your payment, you will receive a confirmation email with your ticket(s).

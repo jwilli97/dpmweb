@@ -64,7 +64,7 @@ export default function RSVPForm() {
 
       // Check for existing email
       const { data: existingRSVP } = await supabase
-        .from('june2025')
+        .from('august2025')
         .select('email')
         .eq('email', validatedData.email)
         .single();
@@ -76,10 +76,38 @@ export default function RSVPForm() {
       }
 
       const { error } = await supabase
-        .from('june2025')
+        .from('august2025')
         .insert([validatedData]);
         
       if (error) throw error;
+
+      // Send confirmation email
+      try {
+        const emailResponse = await fetch('/api/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            firstName: validatedData.firstname,
+            lastName: validatedData.lastname,
+            email: validatedData.email,
+            guests: validatedData.guests,
+            paymentOption: validatedData.paymentOption,
+            paymentHandle: validatedData.paymentHandle,
+          }),
+        });
+
+        if (!emailResponse.ok) {
+          console.error('Failed to send confirmation email:', await emailResponse.text());
+          // Don't throw error here - we don't want to fail the whole process if email fails
+        } else {
+          console.log('Confirmation email sent successfully');
+        }
+      } catch (emailError) {
+        console.error('Error sending confirmation email:', emailError);
+        // Don't throw error here - we don't want to fail the whole process if email fails
+      }
       
       // Redirect to confirmation page on success
       router.push('/confirmation');
@@ -108,14 +136,14 @@ export default function RSVPForm() {
         <CardHeader>
           <CardTitle className="text-3xl font-semibold text-center">
             Electric Lounge
-            <div className="text-xl mt-1 font-normal">June 13, 2025 • North ATX</div>
+            <div className="text-xl mt-1 font-normal">August 16, 2025 • North ATX</div>
           </CardTitle>
           <CardDescription className="text-center text-gray-800 whitespace-pre-line mt-4">
             {`Schedule:
             7:00 PM - Doors Open
-            8:00 PM - Mockjaw
-            9:00 PM - Big Wy's Brass Band
-            10:00 PM - Blue Tongue
+            8:00 PM - K'in
+            9:00 PM - Don't Get Lemon
+            10:00 PM - WhoKilledXiX
 
             Your ticket includes:
             • Food and drink voucher
@@ -161,7 +189,7 @@ export default function RSVPForm() {
               <CarouselPrevious />
               <CarouselNext />
             </Carousel> */}
-            <Image src="/june2025.jpeg" alt="June Poster" width={1000} height={1000} />
+              <Image src="/august2025.png" alt="August Poster" width={1000} height={1000} />
           </div>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
