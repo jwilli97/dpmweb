@@ -93,9 +93,9 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
           </h3>
           <div style={{ lineHeight: '1.6', color: '#555' }}>
             <p><strong>7:00 PM</strong> - Doors Open</p>
-            <p><strong>8:00 PM</strong> - K'in</p>
-            <p><strong>9:00 PM</strong> - Don't Get Lemon</p>
-            <p><strong>10:00 PM</strong> - WhoKilledXiX</p>
+            <p><strong>8:00 PM</strong> - Sam Cooper</p>
+            <p><strong>9:00 PM</strong> - Midnight Navy</p>
+            <p><strong>10:00 PM</strong> - Maru Haru</p>
           </div>
         </div>
 
