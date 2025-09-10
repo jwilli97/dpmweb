@@ -64,10 +64,10 @@ export default function RSVPForm() {
 
       // Check for existing email
       const { data: existingRSVP } = await supabase
-        .from('august2025')
+        .from('september2025')
         .select('email')
         .eq('email', validatedData.email)
-        .single();
+        .maybeSingle();
 
       if (existingRSVP) {
         setErrors({ email: 'An RSVP with this email already exists' });
@@ -76,7 +76,7 @@ export default function RSVPForm() {
       }
 
       const { error } = await supabase
-        .from('august2025')
+        .from('september2025')
         .insert([validatedData]);
         
       if (error) throw error;

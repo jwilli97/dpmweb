@@ -35,7 +35,7 @@ export function RSVPTable() {
   const [sendingEmail, setSendingEmail] = useState<number | null>(null)
 
   const fetchRSVPs = async () => {
-    const { data, error } = await supabase.from("august2025").select("*").order("id", { ascending: true })
+    const { data, error } = await supabase.from("september2025").select("*").order("id", { ascending: true })
 
     if (error) {
       console.error("Error fetching RSVPs:", error)
@@ -50,7 +50,7 @@ export function RSVPTable() {
       console.log('Attempting check-in for ID:', id, 'Current attended status:', attended)
       
       const { error } = await supabase
-        .from("august2025")
+        .from("september2025")
         .update({ attended: !attended })
         .eq("id", id)
 
@@ -72,7 +72,7 @@ export function RSVPTable() {
     try {
       // First, mark tickets as sent in the database
       const { error: dbError } = await supabase
-        .from("august2025")
+        .from("september2025")
         .update({ tickets_sent: true })
         .eq("id", rsvp.id)
 
@@ -138,7 +138,7 @@ export function RSVPTable() {
     try {
       const filteredNames = guestNames.filter(name => name.trim() !== '')
       const { error } = await supabase
-        .from("august2025")
+        .from("september2025")
         .update({ 
           additional_guests: filteredNames 
         })
