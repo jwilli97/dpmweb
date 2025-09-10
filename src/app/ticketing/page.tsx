@@ -108,14 +108,14 @@ export default function RSVPForm() {
         <CardHeader>
           <CardTitle className="text-3xl font-semibold text-center">
             Electric Lounge
-            <div className="text-xl mt-1 font-normal">August 16, 2025 • North ATX</div>
+            <div className="text-xl mt-1 font-normal">September 19, 2025 • North ATX</div>
           </CardTitle>
           <CardDescription className="text-center text-gray-800 whitespace-pre-line mt-4">
             {`Schedule:
             7:00 PM - Doors Open
-            8:00 PM - K'in
-            9:00 PM - don't get lemon
-            10:00 PM - WhoKilledXiX
+            8:00 PM - Sam Cooper
+            9:00 PM - Midnight Navy
+            10:00 PM - Maru Haru
 
             Your ticket includes:
             • Food and drink voucher
@@ -161,7 +161,7 @@ export default function RSVPForm() {
               <CarouselPrevious />
               <CarouselNext />
             </Carousel> */}
-              <Image src="/august2025.jpeg" alt="August Poster" width={1000} height={1000} />
+              <Image src="/sept2025.jpeg" alt="September Poster" width={1000} height={1000} />
           </div>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
