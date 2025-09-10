@@ -49,7 +49,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
           fontSize: '18px',
           fontWeight: 'normal'
         }}>
-          August 16, 2025 • North ATX
+          September 19, 2025 • North ATX
         </h2>
 
         <div style={{ 
@@ -59,7 +59,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
           overflow: 'hidden'
         }}>
           <img 
-            src="https://gxdygxanaalafstmoieh.supabase.co/storage/v1/object/public/email-images/invite.jpeg"
+            src="https://gxdygxanaalafstmoieh.supabase.co/storage/v1/object/public/email-images/invite2.jpeg"
             alt="Electric Lounge Event Invite" 
             style={{ 
               width: '100%', 
@@ -132,7 +132,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
           overflow: 'hidden'
         }}>
           <img 
-            src="https://gxdygxanaalafstmoieh.supabase.co/storage/v1/object/public/email-images/parking.jpeg"
+            src="https://gxdygxanaalafstmoieh.supabase.co/storage/v1/object/public/email-images/parking2.jpeg"
             alt="Parking Information" 
             style={{ 
               width: '100%', 
